@@ -1,0 +1,14 @@
+Layout is drawn in three top down phases:
+
+1. Measure - determines size
+2. Layout - determines boundary - can be requested using requestLayout()
+3. Draw - performs actual draw of view - can be requested using draw()
+
+# https://proandroiddev.com/constraintlayout-vs-other-layouts-a-battle-towards-performance-part-1-14d8116e876e
+# https://android-developers.googleblog.com/2017/08/understanding-performance-benefits-of.html
+
+Use ViewStubs
+
+Reuse layouts using <include>
+
+GPU Overdraw
