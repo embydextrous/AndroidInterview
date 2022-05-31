@@ -1,0 +1,23 @@
+https://developer.android.com/topic/performance/reduce-apk-size
+
+1. Use App Bundles - AAB is publishing format which defers APK generation and signing to
+playstore and download  code and resources only for the device so you don't need to split
+APK's based on density or CPU architecture.
+
+2. Use Android Size Analyzer Plugin
+
+3. Use Proguard to remove unused code and resources.
+
+4. Use Vector Drawables and Drawable Objects
+
+5. Upgrade to AGP 4.2.0 which flattens resource hierarchy and uses short names for resources.
+
+6. Compress PNGs.
+
+7. Crunch PNGs - 256 BIT to 8 BIT
+
+8. Use WebP
+
+9. Use AnimationDrawable instead of GIFs
+
+10. Avoid using native libraries.
