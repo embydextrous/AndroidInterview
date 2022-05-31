@@ -1,0 +1,46 @@
+# https://segment.com/blog/queuefile-reliable-request-batching-android/
+
+Requirement
+
+To save battery and create persistent storage for Analytic events. We need these two things:
+
+1. Durability - Event in queue is not lost even after process death.
+2. Atomicity - Event is added to queue or not. Storage is not in corrupted state.
+3. Thread Safety
+
+Options
+
+1. Memory Queue - Events are lost on process death. Bad durability.
+2. File - Writes are not atomic.
+3. Atomic File (from support library) - Creates backup before writing any changes. But corrupted state need to be restored by caller.
+4. Shared Preferences - Data Set was huge. Not fit for SP. Also, it is not durable as disk writes may fail silently leaving in memory state and file state inconsistent.
+5. SQLite - Provides both Atomicity and Durability and thread safety. But it is heavy framework and meant for advanced queries.
+
+Why we choose queuefile?
+
+1. Adding and removing takes constant time.
+2. Data in queuefile survive crashes.
+3. Small library size.
+4. Writes are atomic.
+
+16 Byte File Header - Series of items called elements as circular buffer - empty space
+File Header - 4 Parts of 4 Bytes that store - File Length, Elements Count, First Element Position, Last Element Position
+
+Element Header (stores element length) - Element Data
+
+First element header and element data is written and fsynced. File Header is not updated yet and so if process dies
+
+Removing happens in reverse.
+
+For thread safety and ordering we used LinkedBlockingQueue a wrapper over queue file.
+
+Flush Strategy
+
+1. Flush Immediate - For certain events related to campaigns.
+2. Flush All Immediate - Flush entire queue file.
+3. Time Based -
+4. WorkManager -
+5. Number of Events Based - Threshold was 20.
+6. Device Network State - When device comes online:
+                immediate events were processed immediately
+                If in main queue number of events >= 20 or last sync was made 10 minutes ago. (Both these values were server configured)

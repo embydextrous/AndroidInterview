@@ -1,4 +1,5 @@
 # https://blog.mindorks.com/touch-control-and-events-in-android
+# https://stackoverflow.com/questions/7449799/how-are-android-touch-events-delivered
 
 What happens when we touch the screen?
 

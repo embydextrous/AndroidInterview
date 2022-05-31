@@ -1,0 +1,27 @@
+Types of Build
+
+https://medium.com/androiddevelopers/improving-build-speed-in-android-studio-3e1425274837
+1. Clean Full
+2. Incremental - Code Change
+3. Incremental - Resource Change
+
+1. Keep Android Studio, SDK Tools and AGP Updated - can affect all 3
+2. Only sync active variant (By default now)
+3. Create separate build variant for development (can avoid multidex by keeping minAPI to 21) - can affect 1 and 2
+4. Avoid Compiling Unnecessary Resources - using resConfigs - can affect all 3
+5. Disable Crashlytics for Debug Builds - ext.enableCrashlytics - false
+6. Disable Automatic Build ID Generation - ext.alwaysUpdateBuildId - false
+7. Use static build config values
+8. Use static dependency versions
+9. Create library modules
+10. Convert Images to WebP
+11. Disable PNG Crunching - crunchPngs false - can affect 1
+12. Use Incremental Annotation Processors - to improve incremental builds
+13. Configure the JVM Garbage Collector - org.gradle.jvmargs=-Xmx1536m -XX:+UseParallelGC
+14. Use non-transitive R classes - Default Since BumbleBee
+15. Disable Multiple APK
+16. org.gradle.caching = true - can affect 1
+org.gradle.daemon=true
+org.gradle.parallel=true
+org.gradle.configureondemand=true
+
