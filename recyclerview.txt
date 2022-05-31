@@ -1,0 +1,86 @@
+For nested recycler views use:
+
+public OuterRecyclerViewAdapter(List<Item> items) {
+    //Constructor stuff
+    viewPool = new RecyclerView.RecycledViewPool();
+}
+
+@Override
+public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    //Create viewHolder etc
+    holder.innerRecyclerView.setRecycledViewPool(viewPool);
+}
+
+ViewHolder Pattern and Memory Optimizations
+
+# https://chetangupta.net/recycler-internals-1/
+Components of Recycler View
+
+/**
+ *  Layout Manager :
+ *  - Position the Views
+ *  - Scrolling Views
+ */
+class LayoutManager
+
+/**
+ *  Recycler View :
+ *  - Coordinator of all component
+ *  - Interaction with Elements
+ */
+class RecyclerView
+
+/**
+ *  Adapter :
+ *  - Create View and ViewHolder
+ *  - binding data to ViewHolder
+ *  - Multiple View Types
+ *  - Recycle Recovery
+ *  - notify data change and out of sync
+ */
+class Adapter
+
+/**
+ *  Item Animator :
+ *  - Animates the views
+ */
+class ItemAnimator
+
+/**
+ *  View Holder :
+ *  - item interaction handler
+ */
+class ViewHolder()
+
+Birth of ViewHolder
+1. ViewCache Success
+    LayoutManager --> getViewForPosition --> RecyclerView
+    RecyclerView --> getViewForPosition --> ViewCache
+    ViewCache --> returns View --> RecyclerView
+    RecyclerView --> returns View --> LayoutManager
+
+2. ViewCache Failure, Recycler Pool Success
+    LayoutManager --> getViewForPosition --> RecyclerView
+    RecyclerView --> getViewForPosition --> ViewCache
+    ViewCache --> returns null --> RecyclerView
+    RecyclerView --> getViewType --> Adapter
+    Adapter --> returns Viewtype --> Recycler View
+    RecyclerView --> get ViewHolder --> RecyclerPool
+    RecyclerPool --> returns ViewHolder --> RecyclerView
+    RecyclerView --> BindViewHolder --> Adapter
+    Adapter --> returns View --> RecyclerView
+    RecyclerView --> returns View --> LayoutManager
+
+2. ViewCache Failure, Recycler Pool Failure
+    LayoutManager --> getViewForPosition --> RecyclerView
+    RecyclerView --> getViewForPosition --> ViewCache
+    ViewCache --> returns null --> RecyclerView
+    RecyclerView --> getViewType --> Adapter
+    Adapter --> returns Viewtype --> Recycler View
+    RecyclerView --> get ViewHolder --> RecyclerPool
+    RecyclerPool --> returns null --> RecyclerView
+    RecyclerView --> Create ViewHolder --> Adapter
+    Adapter --> Bind ViewHolder --> Adapter
+    Adapter --> returns View --> RecyclerView
+    RecyclerView --> returns View --> LayoutManager
+
