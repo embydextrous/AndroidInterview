@@ -1,0 +1,21 @@
+# https://blog.mindorks.com/touch-control-and-events-in-android
+
+What happens when we touch the screen?
+
+DecorView --(dispatchTouchEvent)--> ViewGroup --(dispatchTouchEvent)--> ChildView
+
+How do we intercept touch events?
+
+using onInterceptTouchEvent()
+If it returns true, touch event is not passed to children.
+If it is false, touch event is dispatched to children.
+
+How touch is handled?
+
+ChildView --(onTouchEvent)--> ViewGroup --(onTouchEvent)--> DecorView
+
+Activity -> dispatchTouchEvent (LinearLayout) -> dispatchTouchEvent(Button) -> onTouchEvent(Button).
+
+and when we don't want to tap the button but want to handle the click on LinearLayout, the flow would be,
+
+Activity -> dispatchTouchEvent (LinearLayout) -> dispatchTouchEvent(Button) -> onTouchEvent(Button) (will return false) -> onTouchEvent(LinearLayout).
