@@ -1,0 +1,17 @@
+Surface Flinger - https://stackoverflow.com/questions/5699107/android-surfaceflinger (Composites all surfaces to construct final frame to be rendered and passes it to HAL where HWC does further optimizations)
+VSync - https://medium.com/@kiitvishal89/vsyncs-or-vertical-sync-never-heard-of-it-or-did-you-edc055a0decd
+VSYNC is vertical sync. Its a term common to TVs, monitors, displays, etc. You can basically think of it as the refresh rate, its how often the display is
+actually refreshed. The display can only update on the VSYNC signal, so changes to the display are basically batched until the next VSYNC.
+Display List
+Choreographer - DoFrame -> from UI to render thread
+invalidate() - hey I need to redraw myself
+requestLayout() - hey I need to be measured and layout again
+View - Interactive UI Element
+Surface - Hold pixels that are composited on screen. Every window has a surface.
+Canvas - locked surface to perform View.onDraw()
+Window - A rectangle on screen having its own surface. WManager renders window according to z index order. Each window has single view hierarchy.
+HWC (Hardware Compositor) - Performs reordering and other optimizations
+Frame Buffer and Back Buffer - Frame buffer holds current screen content, back buffer holds next frame content
+Bitmap - An interface to pixels which may or may not be owned by it. (For ex. canvas hooking up to surface which actually owns pixels)
+
+# https://stackoverflow.com/questions/4576909/understanding-canvas-and-surface-concepts
